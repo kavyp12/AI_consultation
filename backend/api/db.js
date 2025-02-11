@@ -31,23 +31,28 @@
 //   initializeDatabase
 // };
 
-
-// db.js
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-// Connect to MongoDB
+let isConnected = false;
+
 const connectDB = async () => {
+  if (isConnected) return; // Prevent multiple connections
+
   try {
-    await mongoose.connect(process.env.MONGODB_URI);
+    await mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+    isConnected = true;
     console.log('MongoDB connected');
   } catch (error) {
     console.error('MongoDB connection error:', error);
-    process.exit(1);
+    throw error;
   }
 };
 
-// Simple schema for form submissions
+// Define Schema
 const submissionSchema = new mongoose.Schema({
   personName: String,
   personDesignation: String,
@@ -60,6 +65,6 @@ const submissionSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-const Submission = mongoose.model('Submission', submissionSchema);
+const Submission = mongoose.models.Submission || mongoose.model('Submission', submissionSchema);
 
 module.exports = { connectDB, Submission };

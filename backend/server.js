@@ -81,64 +81,27 @@
 // // Start the server
 // startServer();
 
-// server.js
-const express = require('express');
-const cors = require('cors');
-const { connectDB, Submission } = require('./db');
-const { sendNotificationEmail } = require('./emailService');
-require('dotenv').config();
+const { connectDB, Submission } = require('../db');
+const { sendNotificationEmail } = require('../emailService');
 
-const app = express();
+module.exports = async (req, res) => {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ message: 'Method Not Allowed' });
+  }
 
-// Middleware
-app.use(cors({
-    origin: 'http://localhost:5173',
-    methods: ['GET', 'POST'],
-    credentials: true
-  }));
-app.use(express.json());
-
-// Simple error handler middleware
-const errorHandler = (err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ message: 'Something went wrong!' });
-};
-
-// Contact form endpoint
-app.post('/api/contact', async (req, res, next) => {
   try {
-    // Create new submission
+    await connectDB(); // Connect to MongoDB
+
+    // Save to MongoDB
     const submission = new Submission(req.body);
     await submission.save();
-    
-    // Send email notification
+
+    // Send notification email
     await sendNotificationEmail(req.body);
-    
-    res.status(201).json({ message: 'Form submitted successfully' });
+
+    return res.status(201).json({ message: 'Form submitted successfully' });
   } catch (error) {
-    if (error.code === 11000) { // MongoDB duplicate key error
-      return res.status(400).json({ message: 'This email has already been submitted' });
-    }
-    next(error);
-  }
-});
-
-// Use error handler
-app.use(errorHandler);
-
-// Start server
-const PORT = process.env.PORT || 3000;
-
-const startServer = async () => {
-  try {
-    await connectDB();
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
-  } catch (error) {
-    console.error('Server startup failed:', error);
-    process.exit(1);
+    console.error('Error processing request:', error);
+    return res.status(500).json({ message: 'Something went wrong!' });
   }
 };
-
-startServer();
