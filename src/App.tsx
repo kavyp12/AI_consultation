@@ -159,24 +159,24 @@ function App() {
               <p className="text-blue-100 text-lg">AI Transformation Made Simple</p>
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white mb-8 leading-tight">
-              Transform Your Product with AI – <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-blue-400">For Free!</span>
+              Enriching your Product with AI Features 
             </h1>
             <p className="text-xl sm:text-2xl text-blue-100 mb-10 max-w-3xl mx-auto leading-relaxed">
-              Unlock the full potential of your product with cutting-edge AI integration. 
-              Get expert guidance without any cost.
+              Unlock the full potential of your product with cutting-edge AI integration, 
+              Get expert guidance.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
               <button
                 onClick={scrollToContact}
                 className="w-full sm:w-auto bg-[#0A2647] text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-[#0A3157] transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-3 shadow-lg shadow-[#0A2647]/30"
               >
-                Get Your Free AI Analysis Now
+                Let's make your product AI-Powered
                 <ArrowDown className="w-5 h-5" />
               </button>
-              <div className="flex items-center gap-3 text-blue-100 px-6 py-2 bg-white/5 rounded-full backdrop-blur-sm">
+              {/* <div className="flex items-center gap-3 text-blue-100 px-6 py-2 bg-white/5 rounded-full backdrop-blur-sm">
                 <Check className="w-5 h-5" />
                 <span className="text-lg">No Credit Card Required</span>
-              </div>
+              </div> */}
             </div>
             {/* <div className="mt-16 text-blue-100 backdrop-blur-sm bg-white/5 inline-block px-8 py-6 rounded-2xl">
               <p className="font-medium text-lg mb-2">Founded by</p>
@@ -201,7 +201,7 @@ function App() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
             {[
-              { number: "50+", label: "Products Enhanced" },
+              { number: "20+", label: "Products Enhanced" },
               { number: "95%", label: "Success Rate" },
               { number: "30+", label: "AI Models Integrated" },
               { number: "100%", label: "Client Satisfaction" }
@@ -220,14 +220,15 @@ function App() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <div className="text-center">
-              <div className="inline-block mb-6 px-6 py-2 bg-[#F8F9FA] rounded-full text-[#0A2647] font-medium text-lg">
-                About enhc
-              </div>
-              <h2 className="text-4xl sm:text-5xl font-bold mb-8 text-[#0A2647]">Revolutionizing Product Development with AI</h2>
+            <div className="inline-block mb-6 px-6 py-2 bg-[#F8F9FA] rounded-full text-[#0A2647] font-medium text-lg">
+  About <span className="font-bold">enhc</span>
+</div>
+
+              <h2 className="text-4xl sm:text-5xl font-bold mb-8 text-[#0A2647]">Transforming your Product into AI Powered Product</h2>
               <p className="text-xl text-gray-600 leading-relaxed mb-12 max-w-3xl mx-auto">
-                We provide free AI consultancy to help businesses integrate artificial intelligence into their products. 
+                We provide AI consultancy to help businesses integrate artificial intelligence into their products. 
                 Our mission is to democratize AI adoption by making expert guidance accessible to everyone, 
-                helping you transform your product into a future-ready solution.
+                helping you transform your product into a future ready AI-Capable solution.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
                 {[
@@ -268,7 +269,7 @@ function App() {
               },
               { 
                 icon: Brain, 
-                title: "AI Research & Analysis", 
+                title: "Detailed Research & Analysis", 
                 desc: "Comprehensive AI feasibility study tailored to your product",
                 details: ["AI model selection", "Integration assessment", "ROI projection"]
               },
@@ -401,60 +402,61 @@ function App() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-24 bg-gradient-to-br from-white via-[#F8F9FA] to-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-20">
-            <div className="inline-block mb-6 px-6 py-2 bg-[#F8F9FA] rounded-full text-[#0A2647] font-medium text-lg">
-              Testimonials
+<section className="py-24 bg-gradient-to-br from-white via-[#F8F9FA] to-white">
+  <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="text-center mb-20">
+      <div className="inline-block mb-6 px-6 py-2 bg-[#F8F9FA] rounded-full text-[#0A2647] font-medium text-lg">
+        Testimonials
+      </div>
+      <h2 className="text-4xl sm:text-5xl font-bold mb-6 text-[#0A2647]">
+        What Our Clients Say
+      </h2>
+      <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+        Join hundreds of satisfied clients who transformed their products with our help
+      </p>
+    </div>
+    <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+      {[
+        {
+          quote:
+            "Learn Stream Campus's integration of AI-powered career guidance, thanks to your consulting, has been transformative.  It's not just a fourth component; it's the key to unlocking our students'futures.",
+          author: "Ronie Sheladia",
+          role: "CEO",
+          company: "Vedcool (Webito Infotech)",
+        },
+        {
+          quote:
+            "This AI photoshoot tool has revolutionized our business! It slashed our photoshoot time from weeks to minutes, saving us significant time and money.We're now launching new styles faster than ever before.",
+          author: "Smit Hirani",
+          role: "Owner",
+          company: "Fashion E-commerce",
+        },
+      ].map((testimonial, index) => (
+        <div
+          key={index}
+          className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+        >
+          <p className="text-gray-600 mb-8 text-lg italic leading-relaxed">
+            "{testimonial.quote}"
+          </p>
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 bg-[#0A2647] rounded-full flex items-center justify-center text-white text-xl font-bold">
+              {testimonial.author[0]}
             </div>
-            <h2 className="text-4xl sm:text-5xl font-bold mb-6 text-[#0A2647]">What Our Clients Say</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Join hundreds of satisfied clients who transformed their products with our help
-            </p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
-            {[
-              {
-                quote: "The AI integration suggestions were exactly what we needed. Their expertise helped us transform our product into a market leader.",
-                author: "Sarah Chen",
-                role: "Product Manager",
-                company: "TechFlow Inc."
-              },
-              {
-                quote: "Transformed our product roadmap with practical AI solutions. The ROI projections were spot-on, and implementation was smooth.",
-                author: "Mike Johnson",
-                role: "CTO",
-                company: "InnovateCorp"
-              },
-              {
-                quote: "Incredible value for a free consultation service. The depth of analysis and actionable insights exceeded our expectations.",
-                author: "Lisa Zhang",
-                role: "Founder",
-                company: "FutureScale"
-              }
-            ].map((testimonial, index) => (
-              <div key={index} className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
-                <div className="flex items-center gap-2 mb-8">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-6 h-6 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <p className="text-gray-600 mb-8 text-lg italic leading-relaxed">"{testimonial.quote}"</p>
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 bg-[#0A2647] rounded-full flex items-center justify-center text-white text-xl font-bold">
-                    {testimonial.author[0]}
-                  </div>
-                  <div>
-                    <p className="font-semibold text-xl text-[#0A2647]">{testimonial.author}</p>
-                    <p className="text-gray-500">{testimonial.role}</p>
-                    <p className="text-[#0A2647] font-medium">{testimonial.company}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
+            <div>
+              <p className="font-semibold text-xl text-[#0A2647]">
+                {testimonial.author}
+              </p>
+              <p className="text-gray-500">{testimonial.role}</p>
+              <p className="text-[#0A2647] font-medium">{testimonial.company}</p>
+            </div>
           </div>
         </div>
-      </section>
+      ))}
+    </div>
+  </div>
+</section>
+
 
       {/* Contact Form */}
       <section id="contact" className="py-24 bg-white">
@@ -573,7 +575,7 @@ function App() {
               disabled={isSubmitting}
               className="mt-10 w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-3 shadow-lg shadow-indigo-500/30 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
-              {isSubmitting ? 'Submitting...' : 'Get Your Free AI Analysis'}
+              {isSubmitting ? 'Submitting...' : 'Get Free Consultation'}
               <Users className="w-6 h-6" />
             </button>
             
@@ -596,12 +598,13 @@ function App() {
                 </span>
               </div>
               <p className="text-gray-400 text-lg leading-relaxed">
-                Transforming products with AI, one business at a time.
+              Transforming your Product into AI Powered Product.
               </p>
             </div>
             <div>
               <h3 className="text-2xl font-bold mb-6">Contact</h3>
               <p className="text-gray-400 text-lg">Email: infoenhc@gmail.com</p>
+              <p className="text-gray-400 text-lg">Number:+91 9879985607</p>
             </div>
             <div>
               <h3 className="text-2xl font-bold mb-6">Follow Us</h3>
@@ -612,8 +615,9 @@ function App() {
             </div>
           </div>
           <div className="border-t border-gray-800 pt-8 text-center">
-            <p className="text-lg">&copy; {new Date().getFullYear()} enhc. All rights reserved.</p>
+          <p className="text-lg">&copy; 2023 enhc. All rights reserved.</p>
           </div>
+
         </div>
       </footer>
     </div>
