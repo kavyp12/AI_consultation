@@ -1,8 +1,6 @@
-import React, { FormEvent } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { ArrowDown, Brain, ChevronRight, FileSearch, LineChart, MessageSquare, Rocket, Users, Check, Star, Zap, Trophy, Target, Shield } from 'lucide-react';
 
-
-// Define interface for form data
 interface FormData {
   personName: string;
   personDesignation: string;
@@ -15,12 +13,20 @@ interface FormData {
 }
 
 function App() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: 'success' | 'error' | null;
+    message: string;
+  }>({ type: null, message: '' });
+
   const scrollToContact = () => {
     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus({ type: null, message: '' });
     
     try {
       const formElement = e.currentTarget;
@@ -43,17 +49,78 @@ function App() {
         body: JSON.stringify(formData)
       });
       
+      const data = await response.json();
+      
       if (response.ok) {
-        alert('Thank you! We will contact you soon.');
+        setSubmitStatus({
+          type: 'success',
+          message: 'Thank you! We will contact you soon.'
+        });
         formElement.reset();
       } else {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Submission failed');
+        throw new Error(data.message || 'Submission failed');
       }
     } catch (error) {
-      alert(error instanceof Error ? error.message : 'Error submitting form. Please try again.');
+      setSubmitStatus({
+        type: 'error',
+        message: error instanceof Error ? error.message : 'Error submitting form. Please try again.'
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   };
+// // Define interface for form data
+// interface FormData {
+//   personName: string;
+//   personDesignation: string;
+//   email: string;
+//   contactNumber: string;
+//   companyName: string;
+//   companyWebsite: string;
+//   productName: string;
+//   productWebsite: string;
+// }
+
+// function App() {
+//   const scrollToContact = () => {
+//     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+//   };
+
+//   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+//     e.preventDefault();
+    
+//     try {
+//       const formElement = e.currentTarget;
+//       const formData: FormData = {
+//         personName: (formElement.elements.namedItem('personName') as HTMLInputElement).value,
+//         personDesignation: (formElement.elements.namedItem('personDesignation') as HTMLInputElement).value,
+//         email: (formElement.elements.namedItem('email') as HTMLInputElement).value,
+//         contactNumber: (formElement.elements.namedItem('contactNumber') as HTMLInputElement).value,
+//         companyName: (formElement.elements.namedItem('companyName') as HTMLInputElement).value,
+//         companyWebsite: (formElement.elements.namedItem('companyWebsite') as HTMLInputElement).value,
+//         productName: (formElement.elements.namedItem('productName') as HTMLInputElement).value,
+//         productWebsite: (formElement.elements.namedItem('productWebsite') as HTMLInputElement).value
+//       };
+
+//       const response = await fetch('http://localhost:3000/api/contact', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify(formData)
+//       });
+      
+//       if (response.ok) {
+//         alert('Thank you! We will contact you soon.');
+//         formElement.reset();
+//       } else {
+//         const errorData = await response.json();
+//         throw new Error(errorData.message || 'Submission failed');
+//       }
+//     } catch (error) {
+//       alert(error instanceof Error ? error.message : 'Error submitting form. Please try again.');
+//     }
+//   };
 
 
   return (
@@ -390,113 +457,133 @@ function App() {
       </section>
 
       {/* Contact Form */}
-<section id="contact" className="py-24 bg-white">
-  <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-    <div className="max-w-4xl mx-auto">
-      <div className="text-center mb-20">
-        <div className="inline-block mb-6 px-6 py-2 bg-indigo-50 rounded-full text-indigo-600 font-medium text-lg">
-          Get Started
+      <section id="contact" className="py-24 bg-white">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-20">
+            <div className="inline-block mb-6 px-6 py-2 bg-indigo-50 rounded-full text-indigo-600 font-medium text-lg">
+              Get Started
+            </div>
+            <h2 className="text-4xl sm:text-5xl font-bold mb-6">Transform Your Product Today</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Fill out the form below and get your free AI consultation worth $5,000
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="bg-white p-10 rounded-2xl shadow-xl">
+            <div className="grid md:grid-cols-2 gap-8">
+              <div>
+                <label className="block text-gray-700 font-medium mb-3">Person Name *</label>
+                <input 
+                  type="text" 
+                  name="personName"
+                  required
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
+                  placeholder="Enter your name"
+                  disabled={isSubmitting}
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 font-medium mb-3">Person Designation *</label>
+                <input 
+                  type="text" 
+                  name="personDesignation"
+                  required
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
+                  placeholder="Your role"
+                  disabled={isSubmitting}
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 font-medium mb-3">Email *</label>
+                <input 
+                  type="email" 
+                  name="email"
+                  required
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
+                  placeholder="your@email.com"
+                  disabled={isSubmitting}
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 font-medium mb-3">Contact Number *</label>
+                <input 
+                  type="tel" 
+                  name="contactNumber"
+                  required
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
+                  placeholder="+1 (555) 000-0000"
+                  disabled={isSubmitting}
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 font-medium mb-3">Company Name *</label>
+                <input 
+                  type="text" 
+                  name="companyName"
+                  required
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
+                  placeholder="Your company name"
+                  disabled={isSubmitting}
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 font-medium mb-3">Company Website</label>
+                <input 
+                  type="url" 
+                  name="companyWebsite"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
+                  placeholder="https://example.com"
+                  disabled={isSubmitting}
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 font-medium mb-3">Product Name *</label>
+                <input 
+                  type="text" 
+                  name="productName"
+                  required
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
+                  placeholder="Your product name"
+                  disabled={isSubmitting}
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 font-medium mb-3">Product Website</label>
+                <input 
+                  type="url" 
+                  name="productWebsite"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
+                  placeholder="https://product.com"
+                  disabled={isSubmitting}
+                />
+              </div>
+            </div>
+
+            {submitStatus.type && (
+              <div className={`mt-6 p-4 rounded-xl ${
+                submitStatus.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
+              }`}>
+                {submitStatus.message}
+              </div>
+            )}
+
+            <button 
+              type="submit" 
+              disabled={isSubmitting}
+              className="mt-10 w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-3 shadow-lg shadow-indigo-500/30 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            >
+              {isSubmitting ? 'Submitting...' : 'Get Your Free AI Analysis'}
+              <Users className="w-6 h-6" />
+            </button>
+            
+            <p className="text-center text-gray-500 mt-6">
+              By submitting this form, you agree to our terms and privacy policy
+            </p>
+          </form>
         </div>
-        <h2 className="text-4xl sm:text-5xl font-bold mb-6">Transform Your Product Today</h2>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          Fill out the form below and get your free AI consultation worth $5,000
-        </p>
       </div>
-      <form onSubmit={handleSubmit} className="bg-white p-10 rounded-2xl shadow-xl">
-        <div className="grid md:grid-cols-2 gap-8">
-          <div>
-            <label className="block text-gray-700 font-medium mb-3">Person Name *</label>
-            <input 
-              type="text" 
-              name="personName"
-              required
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
-              placeholder="Enter your name"
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700 font-medium mb-3">Person Designation *</label>
-            <input 
-              type="text" 
-              name="personDesignation"
-              required
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
-              placeholder="Your role"
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700 font-medium mb-3">Email *</label>
-            <input 
-              type="email" 
-              name="email"
-              required
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
-              placeholder="your@email.com"
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700 font-medium mb-3">Contact Number *</label>
-            <input 
-              type="tel" 
-              name="contactNumber"
-              required
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
-              placeholder="+1 (555) 000-0000"
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700 font-medium mb-3">Company Name *</label>
-            <input 
-              type="text" 
-              name="companyName"
-              required
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
-              placeholder="Your company name"
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700 font-medium mb-3">Company Website</label>
-            <input 
-              type="url" 
-              name="companyWebsite"
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
-              placeholder="https://example.com"
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700 font-medium mb-3">Product Name *</label>
-            <input 
-              type="text" 
-              name="productName"
-              required
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
-              placeholder="Your product name"
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700 font-medium mb-3">Product Website</label>
-            <input 
-              type="url" 
-              name="productWebsite"
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
-              placeholder="https://product.com"
-            />
-          </div>
-        </div>
-        <button 
-          type="submit" 
-          className="mt-10 w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-3 shadow-lg shadow-indigo-500/30"
-        >
-          Get Your Free AI Analysis
-          <Users className="w-6 h-6" />
-        </button>
-        <p className="text-center text-gray-500 mt-6">
-          By submitting this form, you agree to our terms and privacy policy
-        </p>
-      </form>
-    </div>
-  </div>
-</section>
+    </section>
 
       {/* Footer */}
       <footer className="bg-[#0A2647] text-gray-300 py-16">
