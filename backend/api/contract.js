@@ -108,30 +108,42 @@
 // export default allowCors(handler);
 
 
-
+// backend/api/contact.js
 const { connectDB, Submission } = require('../db');
 const { sendNotificationEmail } = require('../emailService');
 
 module.exports = async (req, res) => {
+  // Enable CORS
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+  );
+
+  // Handle OPTIONS request for CORS preflight
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method Not Allowed' });
   }
 
   try {
-    await connectDB(); // Ensure database connection
+    await connectDB();
 
-    // Save submission to MongoDB
     const submission = new Submission(req.body);
     await submission.save();
 
-    // Send notification email
     await sendNotificationEmail(req.body);
 
     return res.status(201).json({ message: 'Form submitted successfully' });
   } catch (error) {
     console.error('Error processing request:', error);
 
-    if (error.code === 11000) { // Handle duplicate email error
+    if (error.code === 11000) {
       return res.status(400).json({ message: 'This email has already been submitted' });
     }
 

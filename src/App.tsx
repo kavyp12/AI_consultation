@@ -40,8 +40,8 @@ function App() {
         productName: (formElement.elements.namedItem('productName') as HTMLInputElement).value,
         productWebsite: (formElement.elements.namedItem('productWebsite') as HTMLInputElement).value
       };
-
-      const response = await fetch('https://ai-consultation.vercel.app/api/contact', {
+  
+      const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
